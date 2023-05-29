@@ -2,11 +2,16 @@ package hello.core.member;
 // 인터페이스의 구현체가 하나일 경우 관례상 Impl 라고 뒤에 붙여줌
 public class MemberServiceImpl implements MemberService {
 
-	// 아직 의존을 객체 생성해서 받아야한다.
-	// Solid 의 원칙중에 DIP 를 잘 지키고 있는가?
-	// 실제로 MemberServiceImpl 는 MemberRepository 라는 역할만을 의존하는게 아니라 역할 + MemoryMemberRepository 구현체도 의존하고 있어 위반되고 있다.
-	// 즉, 추상화에도 의존하고 구체화에도 의존을 하고 있다.
-	private final MemberRepository memberRepository = new MemoryMemberRepository();
+	private final MemberRepository memberRepository;
+
+	public MemberServiceImpl(MemberRepository memberRepository) {
+		// AppConfig 에 할당한 구체 MemoryMemberRepository 가 할당됨
+		// 이렇게 하면 MemberServiceImpl 에 MemoryMemberRepository 를 의존하지않고 MemberRepository 인터페이스만 의존하게 된다.
+		// 다시말해 추상화에만 의존하고 있고 DIP 를 지킬 수 있게 된다.
+		// 구체적인거는 MemberServiceImpl 는 모르고 AppConfig 만 알고 있다.
+		this.memberRepository = memberRepository;
+	}
+
 
 	@Override
 	public void join(Member member) {
