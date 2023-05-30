@@ -2,6 +2,7 @@ package hello.core;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
@@ -28,7 +29,8 @@ public class AppConfig {
 	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
 
 	public DiscountPolicy discountPolicy() {
-		return new FixDiscountPolicy();
+//		return new FixDiscountPolicy();
+		return new RateDiscountPolicy();
 	}
 	// 할일 정책이 수정되면 여기를 바꿔주면 돼
 
