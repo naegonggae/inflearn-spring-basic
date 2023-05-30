@@ -1,5 +1,6 @@
 package hello.core;
 
+import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
@@ -12,14 +13,24 @@ import hello.core.order.OrderServiceImpl;
 public class AppConfig {
 
 	public MemberService memberService() {
-		return new MemberServiceImpl(new MemoryMemberRepository());
+		return new MemberServiceImpl(MemberRepository());
 		// MemberServiceImpl 의 생성자에 구체 MemoryMemberRepository 를 지정해줌
 		// 생성자 주입
 	}
 
+	private static MemoryMemberRepository MemberRepository() {
+		return new MemoryMemberRepository();
+	} // 이거는 cmd opt m 해서 바꾸니까 자동으로 넣어줬네?
+	// DB가 바뀌면 여기를 수정하면 돼
+
 	public OrderService orderService() {
-		return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
+		return new OrderServiceImpl(MemberRepository(), discountPolicy());
+	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
+
+	public DiscountPolicy discountPolicy() {
+		return new FixDiscountPolicy();
 	}
+	// 할일 정책이 수정되면 여기를 바꿔주면 돼
 
 }
 
