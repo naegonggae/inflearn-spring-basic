@@ -8,26 +8,33 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
-// 애플리케이션의 실제 동작에 필요한 구현 클래스를 생성한다.
-// MemberServiceImpl 라는 로미오가 MemoryMemberRepository 라는 줄리엣 누가 뽑을지 신경쓰는게 아니고 AppConfig 라는 기획자가 캐스팅을 하고있다.
-// MemberServiceImpl 라는 로미오는 줄리엣이라는 역할만 알고 연습하면되고 줄리엣이 정확히 누군지는 모른다.
-public class AppConfig {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+// 이렇게 Configuration, Bean 어노테이션을 붙이면 스프링 컨테이너에 저장되게 된다.
+@Configuration
+public class AppConfig {
+	// DI 컨테이너 이다.
+
+	@Bean
 	public MemberService memberService() {
 		return new MemberServiceImpl(MemberRepository());
 		// MemberServiceImpl 의 생성자에 구체 MemoryMemberRepository 를 지정해줌
 		// 생성자 주입
 	}
 
-	private static MemoryMemberRepository MemberRepository() {
+	@Bean
+	public MemoryMemberRepository MemberRepository() {
 		return new MemoryMemberRepository();
 	} // 이거는 cmd opt m 해서 바꾸니까 자동으로 넣어줬네?
 	// DB가 바뀌면 여기를 수정하면 돼
 
+	@Bean
 	public OrderService orderService() {
 		return new OrderServiceImpl(MemberRepository(), discountPolicy());
 	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
 
+	@Bean
 	public DiscountPolicy discountPolicy() {
 //		return new FixDiscountPolicy();
 		return new RateDiscountPolicy();

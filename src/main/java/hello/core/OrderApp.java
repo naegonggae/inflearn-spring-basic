@@ -7,15 +7,22 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class OrderApp {
 
 	public static void main(String[] args) {
-		AppConfig appConfig = new AppConfig();
-		MemberService memberService = appConfig.memberService();
-		OrderService orderService = appConfig.orderService();
-//		MemberService memberService = new MemberServiceImpl();
-//		OrderService orderService = new OrderServiceImpl(memberRepository, discountPolicy);
+//		AppConfig appConfig = new AppConfig();
+//		MemberService memberService = appConfig.memberService();
+//		OrderService orderService = appConfig.orderService();
+
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+		MemberService memberService = applicationContext.getBean("memberService",
+				MemberService.class);
+		OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
+		// getBean = AppConfig 에서 스프링컨테이너로 등록했던 빈 가져와라
+		// 근데 그 빈 이름은 "orderService"(메서드이름으로 저장)이고 타입은 OrderService.class 야
 
 		Long memberId = 1l;
 		Member member = new Member(memberId, "memberA", Grade.VIP);
