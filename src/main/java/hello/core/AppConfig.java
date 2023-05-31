@@ -16,8 +16,14 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 	// DI 컨테이너 이다.
 
+	// @Bean memberService -> new MemoryMemberRepository()
+	// @Bean orderService -> new MemoryMemberRepository()
+	// 벌써 빈등록하면서 MemoryMemberRepository 는 두번 호출됐는데 이건 싱글톤방식을 위반한는거 아닌가? 테스트 코드를 짜보자
+
 	@Bean
 	public MemberService memberService() {
+		System.out.println("Call - AppConfig.memberService");
+		// 실행됐는지 로그 찍어보기
 		return new MemberServiceImpl(MemberRepository());
 		// MemberServiceImpl 의 생성자에 구체 MemoryMemberRepository 를 지정해줌
 		// 생성자 주입
@@ -25,12 +31,14 @@ public class AppConfig {
 
 	@Bean
 	public MemoryMemberRepository MemberRepository() {
+		System.out.println("Call - AppConfig.MemberRepository");
 		return new MemoryMemberRepository();
 	} // 이거는 cmd opt m 해서 바꾸니까 자동으로 넣어줬네?
 	// DB가 바뀌면 여기를 수정하면 돼
 
 	@Bean
 	public OrderService orderService() {
+		System.out.println("Call - AppConfig.orderService");
 		return new OrderServiceImpl(MemberRepository(), discountPolicy());
 	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
 
