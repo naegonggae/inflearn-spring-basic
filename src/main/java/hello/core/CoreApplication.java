@@ -3,7 +3,7 @@ package hello.core;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication // ComponentScan 이 포함되어있어
 public class CoreApplication {
 
 	public static void main(String[] args) {
