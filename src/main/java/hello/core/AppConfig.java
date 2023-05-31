@@ -3,15 +3,19 @@ package hello.core;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
+import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 // 이렇게 Configuration, Bean 어노테이션을 붙이면 스프링 컨테이너에 저장되게 된다.
+// Configuration 안붙이면 AppConfig$$SpringCGLIB 대신 AppConfig.class 타입으로 빈에 등록하고 같은 것일지라도
+// 호출이 되어있으면 빈에 중복과 상관없이 등록한다. memberRepository 같은경우 3번을 등록함 -> 싱글톤이 깨지게 됨
 @Configuration
 public class AppConfig {
 	// DI 컨테이너 이다.
@@ -20,6 +24,8 @@ public class AppConfig {
 	// @Bean orderService -> new MemoryMemberRepository()
 	// 벌써 빈등록하면서 MemoryMemberRepository 는 두번 호출됐는데 이건 싱글톤방식을 위반한는거 아닌가? 테스트 코드를 짜보자
 
+	// Configuration 안써도 싱글톤이 안깨지게 하는 방법은 있다.
+//	@Autowired MemberRepository memberRepository; // 이렇게 빈에 등록된 거를 변수로 가져와서 주입해주면 싱글톤이 유지가 된다.
 	@Bean
 	public MemberService memberService() {
 		System.out.println("Call - AppConfig.memberService");
