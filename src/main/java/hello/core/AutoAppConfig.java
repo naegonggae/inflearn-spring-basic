@@ -1,14 +1,17 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
 @Configuration
 @ComponentScan(
-		basePackages = "hello.core.member", // 어디서 찾을건지 지정
+//		basePackages = "hello.core.member", // 어디서 찾을건지 지정
 		// 탐색할 패키지의 시작 위치를 지정한다. 이 패키지를 포함해서 하위 패키지를 모두 탐색한다.
-		basePackageClasses = AutoAppConfig.class, // 지정 클래스가 속한 패키지내에 탐색
+//		basePackageClasses = AutoAppConfig.class, // 지정 클래스가 속한 패키지내에 탐색
 		// 디폴트는 이 클래스의 하위패키지를 뒤진다.
 		excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 		// AppConfig 를 등록시키지 않기 위해 설정 Configuration 붙은거는 제외하겠다는 말임
@@ -23,4 +26,8 @@ public class AutoAppConfig {
 	// @Service : 스프링 비즈니스 로직에서 사용
 	// @Repository : 스프링 데이터 접근 계층에서 사용 @Configuration : 스프링 설정 정보에서 사용
 
+	@Bean(name = "memoryMemberRepository")
+	MemberRepository memberRepository() {
+		return new MemoryMemberRepository();
+	}
 }

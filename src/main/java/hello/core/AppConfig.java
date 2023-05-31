@@ -30,13 +30,13 @@ public class AppConfig {
 	public MemberService memberService() {
 		System.out.println("Call - AppConfig.memberService");
 		// 실행됐는지 로그 찍어보기
-		return new MemberServiceImpl(MemberRepository());
+		return new MemberServiceImpl(memberRepository());
 		// MemberServiceImpl 의 생성자에 구체 MemoryMemberRepository 를 지정해줌
 		// 생성자 주입
 	}
 
 	@Bean
-	public MemoryMemberRepository MemberRepository() {
+	public MemoryMemberRepository memberRepository() {
 		System.out.println("Call - AppConfig.MemberRepository");
 		return new MemoryMemberRepository();
 	} // 이거는 cmd opt m 해서 바꾸니까 자동으로 넣어줬네?
@@ -45,7 +45,7 @@ public class AppConfig {
 	@Bean
 	public OrderService orderService() {
 		System.out.println("Call - AppConfig.orderService");
-		return new OrderServiceImpl(MemberRepository(), discountPolicy());
+		return new OrderServiceImpl(memberRepository(), discountPolicy());
 	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
 
 	@Bean
