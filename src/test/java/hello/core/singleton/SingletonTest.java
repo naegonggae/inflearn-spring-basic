@@ -34,4 +34,27 @@ public class SingletonTest {
 		// 해결방안은 해당 객체가 딱 1개만 생성되고, 공유하도록 설계하면 된다. -> 싱글톤 패턴
 	}
 
+	@Test
+	@DisplayName("싱글톤 객체를 적용한 객체 사용")
+	void SingletonServiceTest() {
+		// new SingletonService();
+		// java: SingletonService() has private access in hello.core.singleton.SingletonService
+
+		SingletonService singletonService1 = SingletonService.getInstance();
+		SingletonService singletonService2 = SingletonService.getInstance();
+
+		System.out.println("singletonService1 = " + singletonService1);
+		System.out.println("singletonService2 = " + singletonService2);
+		// 같은 인스턴스 객체를 생성함
+		// singletonService1 = hello.core.singleton.SingletonService@1dd92fe2
+		// singletonService2 = hello.core.singleton.SingletonService@1dd92fe2
+
+		assertThat(singletonService1).isSameAs(singletonService2);
+		// 그럼 이제 AppConfig 를 static 에 객체하나 생성하게하고 조회하는 메서드를 만들어서 싱글톤 패턴처럼 리펙토링해야하나?
+		// 그럴 필요없다. 스프링 컨테이너를 쓰면 알아서 해준다..
+
+		// isSameAs : 메모리상 같은 객체를 가리키는지 비교 (주소 비교)
+		// isEqualTo : 객체가 같은 값을 가지고 있는지 비교한다.
+	}
+
 }
