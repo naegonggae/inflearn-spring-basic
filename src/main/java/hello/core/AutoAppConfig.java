@@ -1,7 +1,11 @@
 package hello.core;
 
+import hello.core.discount.DiscountPolicy;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import hello.core.order.OrderService;
+import hello.core.order.OrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +30,20 @@ public class AutoAppConfig {
 	// @Service : 스프링 비즈니스 로직에서 사용
 	// @Repository : 스프링 데이터 접근 계층에서 사용 @Configuration : 스프링 설정 정보에서 사용
 
+	// 생성자 주입을 사용할때 내가 AutoAppConfig 에 수동 주입을 시도하는 상황이다.
+	// 이때 주입하려는 orderService 의 파라미터를 그냥 필드주입으로 설정해주는 상황임
+	// 하지만 굳이 다른 방법있는데 이렇게 하기는 별로다...
+	@Autowired MemberRepository memberRepository;
+	@Autowired DiscountPolicy discountPolicy;
+
+//	@Bean
+//	OrderService orderService(MemberRepository memberRepository, DiscountPolicy discountPolicy) { 요렇게 해도 되는거라
+//		return new OrderServiceImpl(memberRepository, discountPolicy);
+//	}
+	@Bean
+	OrderService orderService() {
+		return new OrderServiceImpl(memberRepository, discountPolicy);
+	}
 	@Bean(name = "memoryMemberRepository")
 	MemberRepository memberRepository() {
 		return new MemoryMemberRepository();

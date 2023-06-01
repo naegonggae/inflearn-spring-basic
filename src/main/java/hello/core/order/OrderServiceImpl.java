@@ -9,35 +9,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-	private MemberRepository memberRepository;
-	private DiscountPolicy discountPolicy;
-	// 수정자 주입방법(setter) final 을 빼야함
-	// 그래서 수정자는 먼저 빈등록 다 해주고 그 다음에 Autowired 찾아다니면서 의존관계 설정해준다.
-	// 필드 값을 메서드를 통해서 수정하는 방법
-	@Autowired //(required = false) 선택적으로 하려면 써줘 -> 얘는 필수값이 아니니까 있어도 되고 없어도된다는 식
-	// 선택, 변경 가능성이 있는 의존관계에 사용
-	// 예를들어 MemberRepository 이 빈에 등록이 안되어 있을때도 사용가능하다.
+	// 외부에서 변경하기 어려워서 테스트하기 힘들다.
+	@Autowired private MemberRepository memberRepository;
+	@Autowired private DiscountPolicy discountPolicy;
+
+	// 이렇게 필드 주입하면 setter 를 만들게 되는데 이럴 바에는 수정자 주입을 한다는 마인드...
+	// 결론 쓰지말자 근데 테스트에 사용할 때도 있긴함
+	@Autowired
 	public void setMemberRepository(MemberRepository memberRepository) {
-		// 로그 찍히는걸 보면 먼저 생성자 주입방법이 먼저 찍히고 수정자 주입방법이 차례로 찍힌다.
-		// 이유는 생성자는 빈등록하면서 생성자를 호출하는데 그때 의존관계 설정도하니까
-		System.out.println("memberRepository2 = " + memberRepository);
 		this.memberRepository = memberRepository;
 	}
-	@Autowired // 이게 없으면 주입이 안된다.
+	@Autowired
 	public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-		System.out.println("discountPolicy2 = " + discountPolicy);
 		this.discountPolicy = discountPolicy;
 	}
+
 	// 생성자 호출시점에 딱 1번만 호출되는 것을 보장된다. 불변, 필수 의존관계에 사용
 	// 원래는 빈등록하고 의존관계주입하는 순서로 이뤄지지만 생성자로 DI를 하면 빈등록할때 생성자를 쓰니까 동시에 하게 되버린다.
 //	@Autowired // OrderServiceImpl 생성자가 하나면 생략해도 됨, 요즘에 안쓰는 추세임
-	public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-		// Autowired 어노테이션을 뺏을때 로그 찍히는 확인함
-		System.out.println("memberRepository = " + memberRepository);
-		System.out.println("discountPolicy = " + discountPolicy);
-		this.memberRepository = memberRepository;
-		this.discountPolicy = discountPolicy;
-	}
+//	public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//		// Autowired 어노테이션을 뺏을때 로그 찍히는 확인함
+//		System.out.println("memberRepository = " + memberRepository);
+//		System.out.println("discountPolicy = " + discountPolicy);
+//		this.memberRepository = memberRepository;
+//		this.discountPolicy = discountPolicy;
+//	}
 
 
 	@Override

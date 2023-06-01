@@ -45,7 +45,8 @@ public class AppConfig {
 	@Bean
 	public OrderService orderService() {
 		System.out.println("Call - AppConfig.orderService");
-		return new OrderServiceImpl(memberRepository(), discountPolicy());
+//		return new OrderServiceImpl(memberRepository(), discountPolicy());
+		return null;
 	} // MemberRepository(), discountPolicy() 요런식으로 바꾼이유도 저것들이 중복으로 들어가있기때문에 변수화 해준거임
 
 	@Bean
