@@ -9,12 +9,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
+	// final 은 값이 꼭 있어야한다는 뜻 = 필수값으로 사용
 	private final MemberRepository memberRepository;
 	private final DiscountPolicy discountPolicy;
-	// 구체 클래스에 대해 전혀 모르고 인터페이스에만 의존하고 있어 DIP 를 잘지키고 있다.
 
-	@Autowired
+	// 생성자 호출시점에 딱 1번만 호출되는 것을 보장된다. 불변, 필수 의존관계에 사용
+	// 원래는 빈등록하고 의존관계주입하는 순서로 이뤄지지만 생성자로 DI를 하면 빈등록할때 생성자를 쓰니까 동시에 하게 되버린다.
+	@Autowired // OrderServiceImpl 생성자가 하나면 생략해도 됨, 요즘에 안쓰는 추세임
 	public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+		// Autowired 어노테이션을 뺏을때 로그 찍히는 확인함
+		System.out.println("memberRepository = " + memberRepository);
+		System.out.println("discountPolicy = " + discountPolicy);
 		this.memberRepository = memberRepository;
 		this.discountPolicy = discountPolicy;
 	}
