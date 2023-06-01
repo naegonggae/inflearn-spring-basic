@@ -30,8 +30,8 @@ public class AutoAppConfig {
 	// @Service : 스프링 비즈니스 로직에서 사용
 	// @Repository : 스프링 데이터 접근 계층에서 사용 @Configuration : 스프링 설정 정보에서 사용
 
-	@Bean(name = "memoryMemberRepository")
-	MemberRepository memberRepository() {
-		return new MemoryMemberRepository();
-	}
+//	@Bean(name = "memoryMemberRepository") // 수동주입과 자동주입 충돌 일어나므로 주석처리
+//	MemberRepository memberRepository() {
+//		return new MemoryMemberRepository();
+//	}
 }
