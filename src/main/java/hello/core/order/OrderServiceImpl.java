@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-	private MemberRepository memberRepository;
-	private DiscountPolicy discountPolicy;
+	// 생성자 주입을 쓰면 좋은점
+	// 파라미터에 연결정보가 들어나 가독성좋다. final 을 사용해서 불변하게 생성한다. 누락하면 오류로 알려준다.
+	// 컴파일 오류가 세상에서 가장 빠르고 좋은 오류다.
+	// 항상 생성자 주입을 선택해라! 그리고 가끔 옵션이 필요하면 수정자 주입을 선택해라. 필드 주입은 사용하지 않는게 좋다.
+	private final MemberRepository memberRepository;
+	private final DiscountPolicy discountPolicy;
 
 	// 생성자 호출시점에 딱 1번만 호출되는 것을 보장된다. 불변, 필수 의존관계에 사용
 	// 원래는 빈등록하고 의존관계주입하는 순서로 이뤄지지만 생성자로 DI를 하면 빈등록할때 생성자를 쓰니까 동시에 하게 되버린다.
@@ -22,13 +26,6 @@ public class OrderServiceImpl implements OrderService {
 		this.memberRepository = memberRepository;
 		this.discountPolicy = discountPolicy;
 	}
-
-	@Autowired // 아무 메서드나 이렇게 할 수 있음 이렇게하면 의존관계가 주입되는데 사실 이건 수정자 주입방법이나 다름없다.
-	public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-		this.memberRepository = memberRepository;
-		this.discountPolicy = discountPolicy;
-	}
-
 
 	@Override
 	public Order createOrder(Long memberId, String itemName, int itemPrice) {
