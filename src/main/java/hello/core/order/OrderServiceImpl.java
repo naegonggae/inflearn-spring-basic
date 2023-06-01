@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Qualifier("mainDiscountPolicy") 여기에 넣어도됨
 //@RequiredArgsConstructor()
 public class OrderServiceImpl implements OrderService {
 
@@ -21,16 +20,13 @@ public class OrderServiceImpl implements OrderService {
 	private final MemberRepository memberRepository;
 	private final DiscountPolicy discountPolicy;
 
-	public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+	public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
 		this.memberRepository = memberRepository;
 		this.discountPolicy = discountPolicy; // 자동 주입을 어떤걸 할지 정하지 못하게된다.
 	}
-	// discountPolicy 파라미터명 원복
-	// Qualifier 에 지정한 이름으로 의존성 연결함
-	// @Qualifier 정리
-	//1. @Qualifier끼리 매칭
-	//2. 빈 이름 매칭
-	//3. NoSuchBeanDefinitionException 예외 발생
+	// Primary 는 간결하게 중복되는 빈 중에 우선권을 부여해서 해결한다.
+	// 그렇다면 @Qualifier, @Primary 두개가 같이 사용되면 우선순위는 어떻게 될까?
+	// 더 자세한 Qualifier 가 우선된다.
 
 	@Override
 	public Order createOrder(Long memberId, String itemName, int itemPrice) {

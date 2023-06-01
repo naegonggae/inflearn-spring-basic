@@ -3,10 +3,11 @@ package hello.core.discount;
 import hello.core.member.Grade;
 import hello.core.member.Member;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("mainDiscountPolicy") // 특별한 이름 부여
+@Primary // 중복되는 빈이 있어 스프링이 선택을 못하게 되면 이걸 먼저 등록시킬거란 뜻
 public class RateDiscountPolicy implements DiscountPolicy {
 
 	private int discountPercent = 10;
