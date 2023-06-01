@@ -6,9 +6,11 @@ import hello.core.member.MemberRepository;
 import java.beans.ConstructorProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Qualifier("mainDiscountPolicy") 여기에 넣어도됨
 //@RequiredArgsConstructor()
 public class OrderServiceImpl implements OrderService {
 
@@ -19,14 +21,16 @@ public class OrderServiceImpl implements OrderService {
 	private final MemberRepository memberRepository;
 	private final DiscountPolicy discountPolicy;
 
-	public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy rateDiscountPolicy) {
+	public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
 		this.memberRepository = memberRepository;
-		this.discountPolicy = rateDiscountPolicy; // 자동 주입을 어떤걸 할지 정하지 못하게된다.
+		this.discountPolicy = discountPolicy; // 자동 주입을 어떤걸 할지 정하지 못하게된다.
 	}
-	// @Autowired 매칭 정리
-	// 1. 타입 매칭
-	// 2. 타입 매칭의 결과가 2개 이상일 때 필드 명, 파라미터 명으로 빈 이름 매칭
-	// 그래서 생성자 주입할때 파라미터 이름이 빈등록한 2개중에 있으면 그걸로 연결해준다.
+	// discountPolicy 파라미터명 원복
+	// Qualifier 에 지정한 이름으로 의존성 연결함
+	// @Qualifier 정리
+	//1. @Qualifier끼리 매칭
+	//2. 빈 이름 매칭
+	//3. NoSuchBeanDefinitionException 예외 발생
 
 	@Override
 	public Order createOrder(Long memberId, String itemName, int itemPrice) {
