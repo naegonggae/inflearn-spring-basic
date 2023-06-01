@@ -20,7 +20,7 @@ public class ConfigurationSingletonTest {
 
 		MemberServiceImpl memberService = ac.getBean("memberService", MemberServiceImpl.class);
 		OrderServiceImpl orderService = ac.getBean("orderService", OrderServiceImpl.class);
-		MemberRepository memberRepository = ac.getBean("MemberRepository", MemberRepository.class);
+		MemberRepository memberRepository = ac.getBean("memberRepository", MemberRepository.class);
 		// 빈등록할때 MemberRepository 맨앞에 m을 대문자로 저장했더라 원래는 소문자로하는게 통상적임
 
 		MemberRepository memberRepository1 = memberService.getMemberRepository();
