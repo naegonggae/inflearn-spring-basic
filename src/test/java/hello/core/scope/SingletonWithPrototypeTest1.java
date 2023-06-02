@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Provider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
@@ -48,11 +49,11 @@ public class SingletonWithPrototypeTest1 {
 	static class ClientBean {
 
 		@Autowired
-		private ObjectProvider<PrototypeBean> prototypeBeansProvider;
+		private Provider<PrototypeBean> prototypeBeansProvider;
 		// 이정도는 스프링이 알아서 빈 등록해준다함
 
 		public int logic() {
-			PrototypeBean prototypeBean = prototypeBeansProvider.getObject();
+			PrototypeBean prototypeBean = prototypeBeansProvider.get();
 			// ApplicationContext 를 직접 호출하지 않고 찾아만 주는것임
 			// ObjectProvider 의 getObject() 를 호출하면 내부에서는 스프링 컨테이너를 통해 해당 빈을 찾아서 반환한다. (DL)
 			prototypeBean.addCount();
