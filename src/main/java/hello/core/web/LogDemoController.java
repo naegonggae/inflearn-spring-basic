@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LogDemoController {
 
 	private final LogDemoService logDemoService;
-	private final Provider<MyLogger> myLoggerProvider;
+	private final MyLogger myLogger;
 
 	@RequestMapping("log-demo")
 	@ResponseBody
 	public String logDemo(HttpServletRequest request) throws InterruptedException {
 		String requestURL = request.getRequestURL().toString();
-		MyLogger myLogger = myLoggerProvider.get();
+
+		System.out.println("myLogger = " + myLogger.getClass()); // 껍데기 myLogger 가 생성되서 수행했다.
+		// myLogger = class hello.core.common.MyLogger$$SpringCGLIB$$0
 		myLogger.setRequestURL(requestURL);
 
 		myLogger.log("controller test");
