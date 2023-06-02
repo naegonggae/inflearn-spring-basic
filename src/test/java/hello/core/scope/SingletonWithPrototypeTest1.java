@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -39,21 +40,21 @@ public class SingletonWithPrototypeTest1 {
 
 		ClientBean clientBean2 = ac.getBean(ClientBean.class);
 		int logic2 = clientBean2.logic();
-		assertThat(logic2).isEqualTo(2);
+		assertThat(logic2).isEqualTo(1);
 
 	}
 
 	@Scope("singleton")
 	static class ClientBean {
-		private final PrototypeBean prototypeBean;
-		// 이 프로토타입은 싱글톤 생성 시점에 주입이 된거야 그래서 프로토타입이지만 싱글톤처럼 계속 같은걸써
 
 		@Autowired
-		public ClientBean(PrototypeBean prototypeBean) {
-			this.prototypeBean = prototypeBean;
-		}
+		private ObjectProvider<PrototypeBean> prototypeBeansProvider;
+		// 이정도는 스프링이 알아서 빈 등록해준다함
 
 		public int logic() {
+			PrototypeBean prototypeBean = prototypeBeansProvider.getObject();
+			// ApplicationContext 를 직접 호출하지 않고 찾아만 주는것임
+			// ObjectProvider 의 getObject() 를 호출하면 내부에서는 스프링 컨테이너를 통해 해당 빈을 찾아서 반환한다. (DL)
 			prototypeBean.addCount();
 			int count = prototypeBean.getCount();
 			return count;
