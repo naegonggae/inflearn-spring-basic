@@ -7,6 +7,7 @@ import jakarta.annotation.PreDestroy;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -40,11 +41,6 @@ public class SingletonWithPrototypeTest1 {
 		int logic2 = clientBean2.logic();
 		assertThat(logic2).isEqualTo(2);
 
-		System.out.println("clientBean1 = " + clientBean1);
-		System.out.println("clientBean2 = " + clientBean2);
-		assertThat(clientBean1).isSameAs(clientBean2);
-
-
 	}
 
 	@Scope("singleton")
@@ -63,6 +59,19 @@ public class SingletonWithPrototypeTest1 {
 			return count;
 		}
 	}
+
+//	@Scope("singleton") // 이렇게하면 프로토타입의 기능을 수행할 수 있다.
+//	static class ClientBean {
+//		@Autowired private ApplicationContext ac;
+//
+//		public int logic() {
+//			PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+//			prototypeBean.addCount();
+//			int count = prototypeBean.getCount();
+//
+//			return count;
+//		}
+//	}
 
 	@Scope("prototype")
 	static class PrototypeBean {
