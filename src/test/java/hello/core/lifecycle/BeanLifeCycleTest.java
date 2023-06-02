@@ -23,7 +23,7 @@ public class BeanLifeCycleTest {
 	static class LifeCycleConfig {
 
 		// 약간 헷갈렸는데 networkClient 란 이름으로 밑에 주소 저장한 로직을 빈에 등록하는거임
-		@Bean(initMethod = "init", destroyMethod = "close")
+		@Bean // (initMethod = "init", destroyMethod = "close")
 		// 추론 기능을 사용하기 싫으면 destroyMethod="" 처럼 빈 공백을 지정하면 된다.
 		// 디폴트 이면 알아서 close 나 shutdown 이름을 찾아서 호출해준다.
 		public NetworkClient networkClient() {
